@@ -88,7 +88,7 @@ export default function PCPartsTable() {
   const handleDelete = async (id) => {
     setError('');
     try {
-      const res = await fetch(`http://localhost:8000/parts/mongo/${id}`, {
+      const res = await fetch(`https://computer-parts-7sj4.onrender.com/parts/mongo/${id}`, {
         method: 'DELETE',
       });
       if (!res.ok) {
