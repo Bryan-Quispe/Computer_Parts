@@ -13,7 +13,7 @@ export default function PCPartsTable() {
   const [searchTerm, setSearchTerm] = useState('');
   const [error, setError] = useState('');
 
-  const API_URL = 'http://localhost:8000/parts';
+  const API_URL = 'https://computer-parts-7sj4.onrender.com/parts';
 
   const fetchParts = async () => {
     const res = await fetch(API_URL);
@@ -216,34 +216,44 @@ export default function PCPartsTable() {
             <th className="border px-2 py-1">Nombre</th>
             <th className="border px-2 py-1">Marca</th>
             <th className="border px-2 py-1">Precio</th>
+            <th className="border px-2 py-1">IVA (15%)</th>
+            <th className="border px-2 py-1">Total con IVA</th>
             <th className="border px-2 py-1">Stock</th>
             <th className="border px-2 py-1">Acciones</th>
           </tr>
         </thead>
+
         <tbody>
-          {filteredParts.map((part) => (
-            <tr key={part._id} className="text-center">
-              <td className="border px-2 py-1">{part.id}</td>
-              <td className="border px-2 py-1">{part.name}</td>
-              <td className="border px-2 py-1">{part.brand}</td>
-              <td className="border px-2 py-1">${part.price.toFixed(2)}</td>
-              <td className="border px-2 py-1">{part.stock}</td>
-              <td className="border px-2 py-1 space-x-2">
-                <button
-                  onClick={() => handleEdit(part)}
-                  className="bg-yellow-500 text-white px-2 py-1 rounded"
-                >
-                  Editar
-                </button>
-                <button
-                  onClick={() => handleDelete(part._id)}
-                  className="bg-red-600 text-white px-2 py-1 rounded"
-                >
-                  Eliminar
-                </button>
-              </td>
-            </tr>
-          ))}
+          {filteredParts.map((part) => {
+            const iva = part.price * 0.15;
+            const totalConIVA = part.price + iva;
+
+            return (
+              <tr key={part._id} className="text-center">
+                <td className="border px-2 py-1">{part.id}</td>
+                <td className="border px-2 py-1">{part.name}</td>
+                <td className="border px-2 py-1">{part.brand}</td>
+                <td className="border px-2 py-1">${part.price.toFixed(2)}</td>
+                <td className="border px-2 py-1">${iva.toFixed(2)}</td>
+                <td className="border px-2 py-1">${totalConIVA.toFixed(2)}</td>
+                <td className="border px-2 py-1">{part.stock}</td>
+                <td className="border px-2 py-1 space-x-2">
+                  <button
+                    onClick={() => handleEdit(part)}
+                    className="bg-yellow-500 text-white px-2 py-1 rounded"
+                  >
+                    Editar
+                  </button>
+                  <button
+                    onClick={() => handleDelete(part._id)}
+                    className="bg-red-600 text-white px-2 py-1 rounded"
+                  >
+                    Eliminar
+                  </button>
+                </td>
+              </tr>
+            );
+          })}
         </tbody>
       </table>
     </div>
